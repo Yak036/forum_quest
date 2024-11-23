@@ -35,10 +35,10 @@ class ShowThread extends Component
 
         // $reply->save();
     }
-    
+
     public function render()
     {
-    
+
         return view('livewire.show-thread',[
             // vas a traer las respuestas donde sea null el reply_id
             'replies'=>$this->thread

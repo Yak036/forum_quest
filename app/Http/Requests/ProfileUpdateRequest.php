@@ -15,9 +15,22 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-        ];
+                'name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
+                'id_number' => ['required', 'string', 'max:20'],
+                'nationality' => ['required', 'string', 'max:100'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+                'date_of_birth' => ['required', 'date'],
+
+                'facebook' => ['nullable', 'url', 'regex:/^https:\/\/(www|es-la)\.facebook\.com\/.+$/'],
+                'instagram' => ['nullable', 'url', 'regex:/^https:\/\/www\.instagram\.com\/.+$/'],
+                'twitter' => ['nullable', 'url', 'regex:/^https:\/\/www\.x\.com\/.+$/'],
+                'tiktok' => ['nullable', 'url', 'regex:/^https:\/\/www\.tiktok\.com\/.+$/'],
+                'personal_page' => ['nullable', 'url', 'regex:/^https:\/\/.+$/'],
+                'description' => ['nullable', 'string', 'max:1000'],
+            ];
+
     }
 }

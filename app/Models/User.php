@@ -17,11 +17,21 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+     protected $fillable = [
+         'name',
+         'last_name',
+         'id_number',
+         'nationality',
+         'email',
+         'date_of_birth',
+         'password',
+         'facebook',
+         'instagram',
+         'twitter',
+         'tiktok',
+         'personal_page',
+         'description',
+     ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,5 +60,9 @@ class User extends Authenticatable
 
     public function replies(){
         return $this->hasMany(Reply::class);
+    }
+
+    public function threads(){
+        return $this->hasMany(Thread::class);
     }
 }

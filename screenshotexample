@@ -1,0 +1,29 @@
+    public function Screenshot(){
+    try {
+      $validated = $this->validate([
+            'personalPage' => ['required','string', 'max:250', new https],
+        ]);
+
+
+      $grabzIt = new \GrabzIt\GrabzItClient("MmE2MjUwYmVlM2I1NDQ3ODgyNWY3MGE4YjA3MTBmZWU", "YomRrV33BQQCBOeUCkJJ5cT_wneAHzUoK7ialDYCtro");
+      $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+
+      $this->filename = substr(str_shuffle(str_repeat($caracteres, 6)), 0, 6);;
+      $options = new \GrabzIt\GrabzItImageOptions();
+      $options->setFormat("png");
+
+      $grabzIt->URLToImage("".$this->personalPage, $options);
+      //Then call the Save or SaveTo method
+      $grabzIt->SaveTo(public_path('media/'.$this->filename.'.png'));
+
+      $this->encontrado = true;
+      Flasher::addSuccess('Se encontro su pagina');
+    } catch (\Exception $e) {
+      Flasher::addError('Hubo un error al ubicar su pagina', [
+        'timer' => 3000, // El tiempo en milisegundos que la alerta debe permanecer visible
+        'overlay' => false, // Si deseas o no un fondo oscuro detrás de la alerta
+        // Puedes agregar más opciones aquí según necesites
+    ]);
+
+}

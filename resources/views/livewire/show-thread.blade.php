@@ -11,8 +11,8 @@
                     <a href="{{ route('thread',$thread) }}" class="text-xl font-semibold text-white/90">
                         {{$thread->title}}
                     </a>
-                    <span 
-                        class="rounded-full text-xs py-2 px-4 capitalize" 
+                    <span
+                        class="rounded-full text-xs py-2 px-4 capitalize"
                         style="color: {{$thread->category->color}}; border: 1px solid {{$thread->category->color}}"
                     >
                         {{$thread->category->name}}
@@ -23,7 +23,7 @@
                         {{$thread->user->name}}
                         {{-- ? Ver la fecha en formato legible --}}
                         <span class="text-white/90">{{$thread->created_at->diffForHumans()}}</span>
-                    
+
                 </p>
                 <p class="text-white/60">
                     {{$this->thread->body}}
@@ -34,17 +34,18 @@
 
     {{-- * Respuestas --}}
     @foreach ($replies as $reply)
-        @livewire('show-reply', ['reply'=> $reply], key('reply-'.$reply->id))    
+        @livewire('show-reply', ['reply'=> $reply], key('reply-'.$reply->id))
     @endforeach
 
     {{-- * Formulario --}}
     <form wire:submit.prevent='postReply'>
-        <input 
-            type="text" 
-            placeholder="Escribe una respuesta" 
-            name="" 
+        <input
+            type="text"
+            placeholder="Escribe una respuesta"
+            name=""
             class="bg-slate-800 border-0 rounded-mb w-full text-white/60 text-xs"
             style="border: 1px solid rgba(255, 255, 255, 0.628);"
+
             {{-- ? Con esta consulta mejoras un poco el rendimiento del sistema --}}
             wire:model.defe='body'
         >

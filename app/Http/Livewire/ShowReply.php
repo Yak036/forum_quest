@@ -10,16 +10,16 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ShowReply extends Component
 {
     use AuthorizesRequests;
-    
+
     public Reply $reply;
     public $body = '';
     public $is_creating = false;
     public $is_editing = false;
-    
+
 
     //? en caso de varias capas debes recordarle al componente que se refresque
     protected $listeners = ['refresh' => '$refresh'];
-    
+
     public function updatedIsCreating(){
         $this->is_editing = false;
         $this->body = '';
@@ -37,7 +37,7 @@ class ShowReply extends Component
         $this->validate([
             'body'=>'required',
         ]);
-        
+
         // Update
         $this->reply->update([
             'body'=> $this->body,
@@ -50,7 +50,7 @@ class ShowReply extends Component
 
     public function postChild(){
 
-        
+
         // * Colocando esto evitas los multiples niveles de respuestas
         if(! is_null($this->reply->reply_id)) return;
 
@@ -58,7 +58,7 @@ class ShowReply extends Component
         $this->validate([
             'body'=>'required',
         ]);
-        
+
         // create
         auth()->user()->replies()->create([
             'reply_id'=> $this->reply->id,

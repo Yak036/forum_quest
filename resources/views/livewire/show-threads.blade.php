@@ -1,13 +1,47 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-10 py-12">
     <div class="w-64">
-        <a href="" class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
+        <a href="{{ route('threads.create')}}" id='store-theard' class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
             Preguntar
         </a>
+        @if(!Auth::check())
+        <script>
+            document.querySelector('#store-theard').addEventListener('click', function(e){
+                e.preventDefault();
+                Swal.fire({
+                  title: "Inicia sesion o Registrate para hacer una pregunta",
+                  icon: "question",
+                  showDenyButton: true,
+                  showCancelButton: true,
+                  confirmButtonText: "Registrarse",
+                  denyButtonText: `Iniciar sesion`
+                }).then((result) => {
+                  /* Read more about isConfirmed, isDenied below */
+                  if (result.isConfirmed) {
+                      window.location.href = "{{ route('register') }}";
+                  } else if (result.isDenied) {
+                      window.location.href = "{{ route('login') }}";
+                  }
+                });
+            })
+        </script>
+        @endif
+        @if (session('success'))
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                           Swal.fire({
+                               icon: 'success',
+                               title: '¡Éxito!',
+                               text: '{{ session('success') }}',
+                               timer: 3000,
+                               showConfirmButton: false
+                           });
+                       });
 
-
+            </script>
+        @endif
         <ul>
             @foreach ($categories as $category)
-            <li class="mb-2">
+            <li class="mb-2 border border-black">
                 <a href="#" wire:click.prevent="filterByCategory('{{$category->id}}')" class="p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs capitalize">
                     <span class="w-2 h-2 rounded-full" style="background-color: {{$category->color}};"></span>
                     {{$category->name}}
@@ -16,7 +50,7 @@
             @endforeach
 
             <li>
-                <a href="#" wire:click.prevent="filterByCategory('')" class="p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs">
+                <a href="#" wire:click.prevent="filterByCategory('')" class="border border-black p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs">
                     <span class="w-2 h-2 rounded-full" style="background-color: #000;"></span>
                     Todos los resultados
                 </a>
@@ -26,16 +60,16 @@
     <div class="w-full">
         {{-- Formulario --}}
         <form action="" class="mb-4">
-            <input 
-                type="text" 
-                placeholder="// ..." 
-                name="" 
+            <input
+                type="text"
+                placeholder="// ..."
+                name=""
                 class="bg-slate-800 border-0 rounded-mb w-1/3 text-white/60 text-xs"
                 wire:model='search'
             >
         </form>
         @foreach ($threads as $thread)
-            <div class="rounded-md bg-gradient-to-r from-slate-800 to-slate-900 hover:to-slate-800 mb-4">
+            <div class="border border-black rounded-md bg-gradient-to-r from-slate-800 to-slate-900 hover:to-slate-800 mb-4">
                 <div class="p-4 flex gap-4">
                     <div class="">
                         <img src="{{$thread->user->avatar()}}" alt="{{$thread->user->name}}">
@@ -46,8 +80,8 @@
                             <a href="{{ route('thread',$thread) }}" class="text-xl font-semibold text-white/90">
                                 {{$thread->title}}
                             </a>
-                            <span 
-                                class="rounded-full text-xs py-2 px-4 capitalize" 
+                            <span
+                                class="rounded-full text-xs py-2 px-4 capitalize"
                                 style="color: {{$thread->category->color}}; border: 1px solid {{$thread->category->color}}"
                             >
                                 {{$thread->category->name}}
@@ -60,11 +94,11 @@
                                 <span class="text-white/90">{{$thread->created_at->diffForHumans()}}</span>
                             </span>
                             <span class="flex items-center gap-1 text-slate-700">
-                                <svg 
-                                data-slot="icon" 
-                                fill="currentColor" 
-                                viewBox="0 0 24 24" 
-                                xmlns="http://www.w3.org/2000/svg" 
+                                <svg
+                                data-slot="icon"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
                                 aria-hidden="true"
                                 class="h-4"
                                 >
@@ -72,7 +106,9 @@
                                 </svg>
                                 {{$thread->replies_count}} Respuesta{{$thread->replies_count !== 1? 's' : ''}}
                                 |
-                                <a href="{{ route('threads.edit', $thread)}}" class="hover:text-white cursor-pointer">Editar</a>
+                                @can('update', $thread)
+                                    <a href="{{ route('threads.edit', $thread)}}" class="hover:text-white cursor-pointer">Editar</a>
+                                @endcan
                             </span>
                         </p>
                     </div>
