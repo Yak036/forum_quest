@@ -1,73 +1,80 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-10 py-12">
-    <div class="w-64">
-        <a href="{{ route('threads.create')}}" id='store-theard' class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
-            Preguntar
-        </a>
-        @if(!Auth::check())
-        <script>
-            document.querySelector('#store-theard').addEventListener('click', function(e){
-                e.preventDefault();
-                Swal.fire({
-                  title: "Inicia sesion o Registrate para hacer una pregunta",
-                  icon: "question",
-                  showDenyButton: true,
-                  showCancelButton: true,
-                  confirmButtonText: "Registrarse",
-                  denyButtonText: `Iniciar sesion`
-                }).then((result) => {
-                  /* Read more about isConfirmed, isDenied below */
-                  if (result.isConfirmed) {
-                      window.location.href = "{{ route('register') }}";
-                  } else if (result.isDenied) {
-                      window.location.href = "{{ route('login') }}";
-                  }
-                });
-            })
-        </script>
-        @endif
-        @if (session('success'))
+    @if (!request()->routeIs('my_threads'))
+        <div class="w-64">
+            <a href="{{ route('threads.create')}}" id='store-theard' class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
+                Preguntar
+            </a>
+            @if(!Auth::check())
             <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                           Swal.fire({
-                               icon: 'success',
-                               title: '¡Éxito!',
-                               text: '{{ session('success') }}',
-                               timer: 3000,
-                               showConfirmButton: false
-                           });
-                       });
-
+                document.querySelector('#store-theard').addEventListener('click', function(e){
+                    e.preventDefault();
+                    Swal.fire({
+                    title: "Inicia sesion o Registrate para hacer una pregunta",
+                    icon: "question",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Registrarse",
+                    denyButtonText: `Iniciar sesion`
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('register') }}";
+                    } else if (result.isDenied) {
+                        window.location.href = "{{ route('login') }}";
+                    }
+                    });
+                })
             </script>
-        @endif
-        <ul>
-            @foreach ($categories as $category)
-            <li class="mb-2 border border-black">
-                <a href="#" wire:click.prevent="filterByCategory('{{$category->id}}')" class="p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs capitalize">
-                    <span class="w-2 h-2 rounded-full" style="background-color: {{$category->color}};"></span>
-                    {{$category->name}}
-                </a>
-            </li>
-            @endforeach
+            @endif
+            @if (session('success'))
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Éxito!',
+                                text: '{{ session('success') }}',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        });
 
-            <li>
-                <a href="#" wire:click.prevent="filterByCategory('')" class="border border-black p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs">
-                    <span class="w-2 h-2 rounded-full" style="background-color: #000;"></span>
-                    Todos los resultados
-                </a>
-            </li>
-        </ul>
-    </div>
+                </script>
+            @endif
+            <ul>
+
+                @foreach ($categories as $category)
+                <li class="mb-2 border border-black">
+                    <a href="#" wire:click.prevent="filterByCategory('{{$category->id}}')" class="p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs capitalize">
+                        <span class="w-2 h-2 rounded-full" style="background-color: {{$category->color}};"></span>
+                        {{$category->name}}
+                    </a>
+                </li>
+                @endforeach
+
+
+                <li>
+                    <a href="#" wire:click.prevent="filterByCategory('')" class="border border-black p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full" style="background-color: #000;"></span>
+                        Todos los resultados
+                    </a>
+                </li>
+            </ul>
+        </div>
+    @endif
     <div class="w-full">
-        {{-- Formulario --}}
-        <form action="" class="mb-4">
-            <input
-                type="text"
-                placeholder="// ..."
-                name=""
-                class="bg-slate-800 border-0 rounded-mb w-1/3 text-white/60 text-xs"
-                wire:model='search'
-            >
-        </form>
+        @if (!request()->routeIs('my_threads'))
+            {{-- Formulario --}}
+            <form action="" class="mb-4">
+                <input
+                    type="text"
+                    placeholder="// ..."
+                    name=""
+                    class="bg-slate-800 border-0 rounded-mb w-1/3 text-white/60 text-xs"
+                    wire:model='search'
+                >
+            </form>
+        @endif
+
         @foreach ($threads as $thread)
             <div class="border border-black rounded-md bg-gradient-to-r from-slate-800 to-slate-900 hover:to-slate-800 mb-4">
                 <div class="p-4 flex gap-4">

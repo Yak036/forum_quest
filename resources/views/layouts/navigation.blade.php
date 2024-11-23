@@ -8,14 +8,22 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Foro') }}
+                        {{ __('Preguntas') }}
                     </x-nav-link>
                 </div>
+                @if(Auth::check())
+                <div class="hidden ml-5 space-x-8 sm:-my-px sm:flex">
+                    <x-nav-link :href="route('my_threads')" :active="request()->routeIs('my_threads')">
+                        {{ __('Mis preguntas') }}
+                    </x-nav-link>
+                </div>
+                @endif
                 <div class="ml-5 hidden space-x-8 sm:-my-px sm:flex">
                     <x-nav-link :href="route('sobrenosotros')" :active="request()->routeIs('sobrenosotros')">
                         {{ __('Sobre nosotros') }}
                     </x-nav-link>
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -101,7 +109,10 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Foro') }}
+                {{ __('Preguntas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('my_threads')" :active="request()->routeIs('my_threads')">
+                {{ __('Mis preguntas') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('sobrenosotros')" :active="request()->routeIs('sobrenosotros')">
                 {{ __('Sobre nosotros') }}

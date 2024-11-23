@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', ShowThreads::class)->name('dashboard');
+Route::get('/my_threads', ShowThreads::class)->name('my_threads');
 
 Route::get('/sobrenosotros', function () {
     return view('sobrenosotros');

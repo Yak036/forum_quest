@@ -22,10 +22,11 @@
                     <x-application-logo class="w-40 h-20 fill-current text-gray-500" />
                 </a>
             </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-blue-950 dark:bg-gray-800 shadow-md sm:rounded-lg">
+            <div class="border border-blue-400 w-full sm:max-w-md mt-6 px-6 py-4 bg-blue-950 dark:bg-gray-800 shadow-lg sm:rounded-lg">
                 {{ $slot }}
             </div>
+
         </div>
+
     </body>
 </html>

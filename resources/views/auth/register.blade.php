@@ -41,7 +41,7 @@
 
             <!-- Date of Birth -->
             <div class="input-group w-full md:w-1/2 px-2">
-                <x-input-label for="date_of_birth" class="block text-white/60 text-xl mt-5" :value="__('Fecha de Nacimiento')" />
+                <x-input-label for="date_of_birth" class="block text-white/60 text-xl mt-5" :value="__('Nacimiento')" />
                 <x-text-input id="date_of_birth" class="bg-slate-800 border-0 rounded-mb w-full text-white/60 max-h-80 text-xl" type="date" name="date_of_birth" :value="old('date_of_birth')" required autocomplete="bday" style="border: 1px solid rgba(255, 255, 255, 0.254); resize: none;" />
                 <x-input-error :messages="$errors->get('date_of_birth')" class="text-red-500" />
             </div>
