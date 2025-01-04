@@ -1,5 +1,4 @@
 <x-guest-layout>
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

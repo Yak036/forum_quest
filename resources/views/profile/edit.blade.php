@@ -1,27 +1,43 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="shadow-black p-4 sm:p-8 bg-gradient-to-r from-slate-800 to-slate-900 dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+    <div class="py-12 bg-gray-300">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">{{ __('Mi Perfil') }}</h1>
+            
+            <div class="grid gap-8">
+                <!-- Información del Perfil -->
+                <div class="bg-white/90 rounded-lg shadow-lg overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-700 border-b border-gray-600">
+                        <h2 class="text-xl font-semibold text-yellow-500">
+                            {{ __('Información Personal') }}
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
                 </div>
-            </div>
 
-            <div class="shadow-black p-4 sm:p-8 bg-gradient-to-r from-slate-800 to-slate-900 dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
+                <!-- Contraseña -->
+                <div class="bg-white/90 rounded-lg shadow-lg overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-700 border-b border-gray-600">
+                        <h2 class="text-xl font-semibold text-yellow-500">
+                            {{ __('Cambiar Contraseña') }}
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        @include('profile.partials.update-password-form')
+                    </div>
                 </div>
-            </div>
 
-            <div class="shadow-black p-4 sm:p-8 bg-gradient-to-r from-slate-800 to-slate-900 dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+                <!-- Eliminar Cuenta -->
+                <div class="bg-white/90 rounded-lg shadow-lg overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-700 border-b border-gray-600">
+                        <h2 class="text-xl font-semibold text-red-500">
+                            {{ __('Eliminar Cuenta') }}
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        @include('profile.partials.delete-user-form')
+                    </div>
                 </div>
             </div>
         </div>

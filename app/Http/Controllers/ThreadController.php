@@ -33,7 +33,7 @@ class ThreadController extends Controller
          'category_id'=> $request->input('category'),
 
          ]);
-        session()->flash('success', 'Pregunta creada exitosamente.');
+        session()->flash('success', 'Tema creado exitosamente.');
         return redirect()->route('dashboard');
     }
 

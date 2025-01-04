@@ -1,46 +1,56 @@
 <x-app-layout>
-  <div class="max-w-4xl  mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="rounded-md bg-gradient-to-r from-slate-800 to-slate-900 mb-4">
-        <div class="p-4">
+  <div class="py-12">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+              <div class="p-6">
+                  <div class="flex justify-between items-center mb-6">
+                      <h2 class="text-2xl font-semibold text-yellow-600">
+                          Editar tema
+                      </h2>
+                      <form id="delete-thread" action="{{ route('threads.destroy', $thread) }}" method="POST" class="inline">
+                          @csrf
+                          @method('DELETE')
+                          <button type="button" 
+                              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
+                              onclick="confirmDelete()">
+                              Eliminar tema
+                          </button>
+                      </form>
+                  </div>
 
-          <h2 class="mb-4 flex font-semibold text-white/90">
-              Editar Pregunta
-          </h2>
-          <form action="{{route('threads.update', $thread)}}" method="POST">
-            @csrf
-            @method('PUT')
+                  <form action="{{ route('threads.update', $thread) }}" method="POST">
+                      @csrf
+                      @method('PUT')
 
-            @include('thread.form')
+                      @include('thread.form')
 
-            <input type="submit" value="Editar Pregunta" class="cursor-pointer w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs rounded-md">
-          </form>
+                      <div class="flex justify-end mt-6">
+                          <button type="submit" 
+                              class="bg-yellow-500 text-white px-6 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-colors duration-200">
+                              Actualizar tema
+                          </button>
+                      </div>
+                  </form>
 
-          @if(isset($thread))
-            <form id='delete-theard' action="{{route('threads.destroy', $thread)}}" method="POST" class="mt-5">
-                @csrf
-                @method('DELETE')
-                <input type="submit"  value="Eliminar" class="cursor-pointer w-full py-4 bg-gradient-to-r from-red-600 to-red-700 hover:to-red-600 text-white/90 font-bold text-xs rounded-md">
-                    <script>
-                        document.querySelector('#delete-theard').addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            Swal.fire({
-                              title: "Estas seguro??",
-                              text: "Esta accion no puede revertise",
+                  <script>
+                      function confirmDelete() {
+                          Swal.fire({
+                              title: "¿Estás seguro?",
+                              text: "Esta acción no puede revertirse",
                               icon: "warning",
                               showCancelButton: true,
                               confirmButtonColor: "#3085d6",
                               cancelButtonColor: "#d33",
-                              confirmButtonText: "Si"
-                            }).then((result) => {
+                              confirmButtonText: "Sí"
+                          }).then((result) => {
                               if (result.isConfirmed) {
-                                  document.querySelector('#delete-theard').submit();
+                                  document.querySelector('#delete-thread').submit();
                               }
-                            });
-                        });
-                    </script>
-            </form>
-          @endif
-        </div>
-    </div>
+                          });
+                      }
+                  </script>
+              </div>
+          </div>
+      </div>
   </div>
 </x-app-layout>

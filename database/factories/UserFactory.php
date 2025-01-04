@@ -36,7 +36,7 @@ class UserFactory extends Factory
             'twitter' => fake()->url(),
             'tiktok' => fake()->url(),
             'personal_page' => fake()->url(),
-            'description' => fake()->text(),
+            'description' => '<p>' . fake()->text() . '</p>',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];

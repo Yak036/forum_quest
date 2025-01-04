@@ -6,7 +6,6 @@ use App\Models\Reply;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-
 class ShowReply extends Component
 {
     use AuthorizesRequests;
@@ -15,62 +14,77 @@ class ShowReply extends Component
     public $body = '';
     public $is_creating = false;
     public $is_editing = false;
+    public $is_deleting = false;
 
+    protected $listeners = ['refreshThread' => '$refresh'];
 
-    //? en caso de varias capas debes recordarle al componente que se refresque
-    protected $listeners = ['refresh' => '$refresh'];
+    public function updatedIsCreating()
+    {
+        $this->is_editing = false;
+        $this->is_deleting = false;
+        $this->body = '';
+    }
 
-    public function updatedIsCreating(){
+    public function updatedIsDeleting()
+    {
+        $this->is_creating = false;
         $this->is_editing = false;
         $this->body = '';
     }
 
-    public function updatedIsEditing(){
+    public function updatedIsEditing()
+    {
         $this->authorize('update', $this->reply);
         $this->is_creating = false;
+        $this->is_deleting = false;
         $this->body = $this->reply->body;
     }
 
-    public function updateReply(){
-        $this->authorize('update', $this->reply);
-        // validate
-        $this->validate([
-            'body'=>'required',
-        ]);
+    public function postChild()
+    {
+        if(!auth()->check()){
+            return redirect()->route('login');
+        }
 
-        // Update
-        $this->reply->update([
-            'body'=> $this->body,
-        ]);
+        $this->validate(['body' => 'required']);
 
-        // refresh
-        $this->is_editing = false;
-
-    }
-
-    public function postChild(){
-
-
-        // * Colocando esto evitas los multiples niveles de respuestas
-        if(! is_null($this->reply->reply_id)) return;
-
-        // validate
-        $this->validate([
-            'body'=>'required',
-        ]);
-
-        // create
         auth()->user()->replies()->create([
-            'reply_id'=> $this->reply->id,
-            'thread_id'=> $this->reply->thread->id,
-            'body'=> $this->body,
+            'reply_id' => $this->reply->id,
+            'thread_id' => $this->reply->thread->id,
+            'body' => $this->body
         ]);
 
-        // refresh
         $this->is_creating = false;
         $this->body = '';
-        //? emite este evento en tu componente para refrescarlo
-        $this->emitSelf('refresh');
+        
+        $this->emit('refreshThread');
+    }
+
+    public function updateReply()
+    {
+        $this->authorize('update', $this->reply);
+
+        $this->validate(['body' => 'required']);
+
+        $this->reply->update(['body' => $this->body]);
+
+        $this->is_editing = false;
+        $this->body = '';
+
+        $this->emit('refreshThread');
+    }
+
+    public function delete()
+    {
+        $this->authorize('delete', $this->reply);
+        
+        // Eliminar primero las respuestas hijas
+        $this->reply->replies()->delete();
+        // Luego eliminar la respuesta principal
+        $this->reply->delete();
+
+        // Emitir evento para actualizar todo el thread
+        $this->emit('refreshThread');
     }
 
     public function render()

@@ -5,6 +5,7 @@ use App\Http\Controllers\ThreadController;
 use App\Http\Livewire\ShowThread;
 use App\Http\Livewire\ShowThreads;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Livewire\Register;
 // use App\Models\Thread;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,8 @@ Route::get('/sobrenosotros', function () {
 })->name('sobrenosotros');
 
 Route::get('/thread/{thread}', ShowThread::class)->middleware(['auth'])->name('thread');
+
+Route::get('/register', Register::class)->name('register');
 
 
 Route::post('/personal_page_check', [RegisteredUserController::class, 'screenShot'])->name('personal_page_check');

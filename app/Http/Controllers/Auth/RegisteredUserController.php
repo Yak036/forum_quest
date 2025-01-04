@@ -83,7 +83,7 @@ class RegisteredUserController extends Controller
     public function screenShot(Request $request)
     {
         try {
-                $grabzIt = new \GrabzIt\GrabzItClient("YzE2MzA5MzZhNWMyNDMyZTgyNTgyM2FhY2I2ODM0OWM", "2ke_aUU_zC1hXDr9BQ1QNCg4Q_NQEGpb04sYjDdHjbA");
+                $grabzIt = new \GrabzIt\GrabzItClient("YjQ5ZmY5OGM1N2FjNDkwOWJjZTI3YWEwYWE0MTEwNTc", "tyFXdmgVcODTvnckcjwIQAP9jqkX7h2hAN3rnikNHxQ");
                 $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
                 $filename = substr(str_shuffle(str_repeat($caracteres, 6)), 0, 6);

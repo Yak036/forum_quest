@@ -1,106 +1,76 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-10 py-12">
     @if (!request()->routeIs('my_threads'))
         <div class="w-64">
-            <a href="{{ route('threads.create')}}" id='store-theard' class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
-                Preguntar
+            <a href="{{ route('threads.create')}}" class="block w-full py-4 mb-10 bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 text-white font-bold text-sm text-center rounded-md">
+                Crear un tema
             </a>
             @if(!Auth::check())
-            <script>
-                document.querySelector('#store-theard').addEventListener('click', function(e){
-                    e.preventDefault();
-                    Swal.fire({
-                    title: "Inicia sesion o Registrate para hacer una pregunta",
-                    icon: "question",
-                    showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Registrarse",
-                    denyButtonText: `Iniciar sesion`
-                    }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        window.location.href = "{{ route('register') }}";
-                    } else if (result.isDenied) {
-                        window.location.href = "{{ route('login') }}";
-                    }
-                    });
-                })
-            </script>
-            @endif
-            @if (session('success'))
-                <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Éxito!',
-                                text: '{{ session('success') }}',
-                                timer: 3000,
-                                showConfirmButton: false
-                            });
-                        });
-
-                </script>
-            @endif
-            <ul>
-
-                @foreach ($categories as $category)
-                <li class="mb-2 border border-black">
-                    <a href="#" wire:click.prevent="filterByCategory('{{$category->id}}')" class="p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs capitalize">
-                        <span class="w-2 h-2 rounded-full" style="background-color: {{$category->color}};"></span>
-                        {{$category->name}}
+                <div class="bg-white p-6 rounded-lg shadow-md mb-4">
+                    <p class="text-gray-700 mb-4">Inicia sesión para participar en el foro</p>
+                    <a href="{{ route('login') }}" class="block w-full py-2 text-center bg-yellow-600 hover:bg-yellow-700 text-white rounded-md text-sm font-medium">
+                        Iniciar sesión
                     </a>
-                </li>
-                @endforeach
+                </div>
+            @endif
 
-
-                <li>
-                    <a href="#" wire:click.prevent="filterByCategory('')" class="border border-black p-2 rounded-md flex bg-slate-800 item-center gap-2 text-white/60 hover:text-white font-semibold text-xs">
-                        <span class="w-2 h-2 rounded-full" style="background-color: #000;"></span>
-                        Todos los resultados
-                    </a>
-                </li>
-            </ul>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Categorías</h2>
+                <ul class="space-y-2">
+                    @foreach($categories as $categoryDB)
+                        <li>
+                            <a href="#" wire:click.prevent="filterByCategory({{ $categoryDB->id }})" 
+                                class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 {{ $category == $categoryDB->id ? 'bg-yellow-50 text-yellow-600' : 'text-gray-600' }}">
+                                <span class="w-2 h-2 rounded-full" style="background-color: {{ $categoryDB->color }}"></span>
+                                {{ $categoryDB->name }}
+                                <span class="text-xs text-gray-500">({{ $categoryDB->threads_count }})</span>
+                            </a>
+                        </li>
+                    @endforeach
+                    <li>
+                        <a href="#" wire:click.prevent="filterByCategory('')" class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50 {{ $category == '' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-600' }}">
+                            <span class="w-2 h-2 rounded-full" style="background-color: #000;"></span>
+                            Todos los resultados
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     @endif
-    <div class="w-full">
+
+    <div class="flex-1">
         @if (!request()->routeIs('my_threads'))
             {{-- Formulario --}}
-            <form action="" class="mb-4">
-                <input
-                    type="text"
-                    placeholder="// ..."
-                    name=""
-                    class="bg-slate-800 border-0 rounded-mb w-1/3 text-white/60 text-xs"
-                    wire:model='search'
+            <form class="mb-4">
+                <input type="text" 
+                    placeholder="Buscar..." 
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+                    wire:model="search"
                 >
             </form>
         @endif
 
-        @foreach ($threads as $thread)
-            <div class="border border-black rounded-md bg-gradient-to-r from-slate-800 to-slate-900 hover:to-slate-800 mb-4">
-                <div class="p-4 flex gap-4">
-                    <div class="">
-                        <img src="{{$thread->user->avatar()}}" alt="{{$thread->user->name}}">
+        @foreach($threads as $thread)
+            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                <div class="flex gap-4">
+                    <div>
+                        <img src="{{ $thread->user->avatar() }}" alt="{{ $thread->user->name }}" class="rounded-full">
                     </div>
-
                     <div class="w-full">
                         <h2 class="mb-4 flex items-start justify-between">
-                            <a href="{{ route('thread',$thread) }}" class="text-xl font-semibold text-white/90">
-                                {{$thread->title}}
+                            <a href="{{ route('thread', $thread) }}" class="text-xl font-semibold text-gray-900 hover:text-yellow-600">
+                                {{ $thread->title }}
                             </a>
-                            <span
-                                class="rounded-full text-xs py-2 px-4 capitalize"
-                                style="color: {{$thread->category->color}}; border: 1px solid {{$thread->category->color}}"
-                            >
-                                {{$thread->category->name}}
+                            <span class="rounded-full text-xs py-2 px-4 capitalize bg-yellow-600 text-white">
+                                {{ $thread->category->name }}
                             </span>
                         </h2>
-                        <p class="flex items-center justify-between w-full text-xs">
-                            <span class="text-blue-600 font-semibold">
-                                {{$thread->user->name}}
+                        <p class="flex items-center justify-between w-full text-sm">
+                            <span class="text-yellow-600 font-semibold">
+                                {{ $thread->user->name }}
                                 {{-- ? Ver la fecha en formato legible --}}
-                                <span class="text-white/90">{{$thread->created_at->diffForHumans()}}</span>
+                                <span class="text-gray-600">{{ $thread->created_at->diffForHumans() }}</span>
                             </span>
-                            <span class="flex items-center gap-1 text-slate-700">
+                            <span class="flex items-center gap-1 text-gray-600">
                                 <svg
                                 data-slot="icon"
                                 fill="currentColor"
@@ -111,10 +81,10 @@
                                 >
                                     <path clip-rule="evenodd" fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z"></path>
                                 </svg>
-                                {{$thread->replies_count}} Respuesta{{$thread->replies_count !== 1? 's' : ''}}
+                                {{ $thread->replies_count }} Respuesta{{ $thread->replies_count !== 1? 's' : ''}}
                                 |
                                 @can('update', $thread)
-                                    <a href="{{ route('threads.edit', $thread)}}" class="hover:text-white cursor-pointer">Editar</a>
+                                    <a href="{{ route('threads.edit', $thread)}}" class="hover:text-yellow-600 cursor-pointer">Editar</a>
                                 @endcan
                             </span>
                         </p>
@@ -123,4 +93,17 @@
             </div>
         @endforeach
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#D97706'
+            });
+        @endif
+    });
+</script>
+
 </div>

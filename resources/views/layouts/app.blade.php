@@ -5,26 +5,50 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('title', config('app.name'))</title>
 
-
+        <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gradient-to-r from-slate-800 to-slate-900 dark:bg-gray-900">
-            <div class="bg-gradient-to-r from-slate-900 to-slate-800 h-2"></div>
-            @include('layouts.navigation')
+        <style>
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 6px;
+            border: 3px solid #1f2937;
+        }
+        </style>
+        <div class="min-h-screen bg-gray-300">
+            @if (Route::currentRouteName() != 'register')
+                @include('layouts.navigation')
+            @endif
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
+            <main class="py-4">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            {{ $slot }}
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
 
         @livewireScripts
-
     </body>
 </html>

@@ -1,45 +1,102 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div class="input-group">
-            <x-input-label for="email" class="block text-white/60 text-xl mt-5" :value="__('Email')" />
-            <x-text-input id="email" class="bg-slate-800 border-0 rounded-mb w-full text-white/60 max-h-80 text-xl" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" style="border: 1px solid rgba(255, 255, 255, 0.254); overflow: hidden; resize: none;" />
-            <x-input-error :messages="$errors->get('email')" class="text-red-500" />
+    <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="text-center">
+            <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
+                Iniciar sesión
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Accede a tu cuenta
+            </p>
         </div>
 
-        <!-- Password -->
-        <div class="input-group">
-            <x-input-label for="password" class="block text-white/60 text-xl mt-5" :value="__('Password')" />
-            <x-text-input id="password" class="bg-slate-800 border-0 rounded-mb w-full text-white/60 max-h-80 text-xl" type="password" name="password" required autocomplete="current-password" style="border: 1px solid rgba(255, 255, 255, 0.254); overflow: hidden; resize: none;" />
-            <x-input-error :messages="$errors->get('password')" class="text-red-500" />
-        </div>
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <!-- Remember Me -->
-        <div class="input-group block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-white/60">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+        <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
+            @csrf
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-white/60 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register') }}">
-                {{ __('¿No tienes cuenta?') }}
-            </a>
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-white/60 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <!-- Email Address -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                <input id="email" name="email" type="email" autocomplete="email" required 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                    focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+                    :value="old('email')">
+                <x-input-error :messages="$errors->get('email')" class="text-red-500 text-xs mt-1" />
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                    focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+                <x-input-error :messages="$errors->get('password')" class="text-red-500 text-xs mt-1" />
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember_me" name="remember" type="checkbox" 
+                        class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded">
+                    <label for="remember_me" class="ml-2 block text-sm text-gray-700">
+                        Recordarme
+                    </label>
+                </div>
+
+                @if (Route::has('password.request'))
+                    <div class="text-sm">
+                        <a href="{{ route('password.request') }}" class="font-medium text-yellow-600 hover:text-yellow-500">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+            <div>
+                <button type="submit" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
+                    bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    Iniciar sesión
+                </button>
+            </div>
+
+            <div class="text-center text-sm">
+                <p class="text-gray-600">
+                    ¿No tienes cuenta?
+                    <a href="{{ route('register') }}" class="font-medium text-yellow-600 hover:text-yellow-500">
+                        Regístrate
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        /* Estilos personalizados para el tema amarillo */
+        .focus\:ring-yellow-500:focus {
+            --tw-ring-color: #F59E0B;
+            --tw-ring-opacity: 0.5;
+        }
+        .focus\:border-yellow-500:focus {
+            --tw-border-opacity: 1;
+            border-color: rgba(245, 158, 11, var(--tw-border-opacity));
+        }
+        .bg-yellow-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgba(217, 119, 6, var(--tw-bg-opacity));
+        }
+        .hover\:bg-yellow-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgba(180, 83, 9, var(--tw-bg-opacity));
+        }
+        .text-yellow-600 {
+            --tw-text-opacity: 1;
+            color: rgba(217, 119, 6, var(--tw-text-opacity));
+        }
+        .hover\:text-yellow-500:hover {
+            --tw-text-opacity: 1;
+            color: rgba(245, 158, 11, var(--tw-text-opacity));
+        }
+    </style>
 </x-guest-layout>
