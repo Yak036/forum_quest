@@ -39,6 +39,7 @@ class UserFactory extends Factory
             'description' => '<p>' . fake()->text() . '</p>',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
+            'role' => 'user'
         ];
     }
 

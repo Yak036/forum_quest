@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\ContactController;
 use App\Http\Livewire\ShowThread;
 use App\Http\Livewire\ShowThreads;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -11,12 +12,23 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', ShowThreads::class)->name('dashboard');
-Route::get('/my_threads', ShowThreads::class)->name('my_threads');
 
 Route::get('/sobrenosotros', function () {
     return view('sobrenosotros');
 })->name('sobrenosotros');
+
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contactSend');
+
+
+Route::get('/', ShowThreads::class)->name('dashboard');
+Route::get('/my_threads', ShowThreads::class)->name('my_threads');
+
+
 
 Route::get('/thread/{thread}', ShowThread::class)->middleware(['auth'])->name('thread');
 
