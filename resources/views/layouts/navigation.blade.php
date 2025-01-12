@@ -26,6 +26,11 @@
                     <x-nav-link :href="route('sobrenosotros')" :active="request()->routeIs('sobrenosotros')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                         {{ __('Sobre nosotros') }}
                     </x-nav-link>
+                    @if(Auth::check() && Auth::user()->role === 'admin')
+                    <x-nav-link :href="route('adminPanel')" :active="request()->routeIs('admin_panel')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        {{ __('Panel administrativo') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 

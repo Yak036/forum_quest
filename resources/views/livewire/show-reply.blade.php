@@ -49,7 +49,7 @@
                             </button>
                         @endif
 
-                        @if ($reply->user_id == auth()->id())
+                        @if ($reply->user_id == auth()->id() || auth()->user()->role === 'admin')
                             @if (!$is_editing && !$is_creating && !$is_deleting)
                                 <button wire:click="$toggle('is_editing')"
                                     class="text-yellow-600 hover:text-yellow-700">

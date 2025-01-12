@@ -47,54 +47,64 @@
                     wire:model="search"
                 >
             </form>
+        @else
+            <a href="{{ route('threads.create')}}" class="block w-full py-4 mb-10 bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 text-white font-bold text-sm text-center rounded-md">
+                Crear un tema
+            </a>
         @endif
-
-        @foreach($threads as $thread)
-            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <div class="flex gap-4">
-                    <div>
-                        <img src="{{ $thread->user->avatar() }}" alt="{{ $thread->user->name }}" class="rounded-full">
-                    </div>
-                    <div class="w-full">
-                        <h2 class="mb-4 flex items-start justify-between">
-                            <a href="{{ route('thread', $thread) }}" class="text-xl font-semibold text-gray-900 hover:text-yellow-600">
-                                {{ $thread->title }}
-                            </a>
-                            <span class="rounded-full text-xs py-2 px-4 capitalize bg-yellow-600 text-white">
-                                {{ $thread->category->name }}
-                            </span>
-                        </h2>
-                        <p class="flex items-center justify-between w-full text-sm">
-                            <span class="text-yellow-600 font-semibold">
-                                {{ $thread->user->name }}
-                                {{-- ? Ver la fecha en formato legible --}}
-                                <span class="text-gray-600">{{ $thread->created_at->diffForHumans() }}</span>
-                            </span>
-                            <span class="flex items-center gap-1 text-gray-600">
-                                <svg
-                                data-slot="icon"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                                class="h-4"
-                                >
-                                    <path clip-rule="evenodd" fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z"></path>
-                                </svg>
-                                {{ $thread->replies_count }} Respuesta{{ $thread->replies_count !== 1? 's' : ''}}
-                                |
-                                @can('update', $thread)
-                                    <a href="{{ route('threads.edit', $thread)}}" class="hover:text-yellow-600 cursor-pointer">Editar</a>
-                                @endcan
-                            </span>
-                        </p>
+        @if ($threads->isEmpty())
+            
+            <p class="text-gray-200 bg-gray-800 text-center p-5 rounded-lg">No posees ningun tema</p>
+        @else
+            @foreach($threads as $thread)
+                <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                    <div class="flex gap-4">
+                        <div>
+                            <img src="{{ $thread->user->avatar() }}" alt="{{ $thread->user->name }}" class="rounded-full">
+                        </div>
+                        <div class="w-full">
+                            <h2 class="mb-4 flex items-start justify-between">
+                                <a href="{{ route('thread', $thread) }}" class="text-xl font-semibold text-gray-900 hover:text-yellow-600">
+                                    {{ $thread->title }}
+                                </a>
+                                <span class="rounded-full text-xs py-2 px-4 capitalize bg-yellow-600 text-white">
+                                    {{ $thread->category->name }}
+                                </span>
+                            </h2>
+                            <p class="flex items-center justify-between w-full text-sm">
+                                <span class="text-yellow-600 font-semibold">
+                                    {{ $thread->user->name }}
+                                    {{-- ? Ver la fecha en formato legible --}}
+                                    <span class="text-gray-600">{{ $thread->created_at->diffForHumans() }}</span>
+                                </span>
+                                <span class="flex items-center gap-1 text-gray-600">
+                                    <svg
+                                    data-slot="icon"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    class="h-4"
+                                    >
+                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z"></path>
+                                    </svg>
+                                    {{ $thread->replies_count }} Respuesta{{ $thread->replies_count !== 1? 's' : ''}}
+                                    |
+                                    @can('update', $thread)
+                                        <a href="{{ route('threads.edit', $thread)}}" class="hover:text-yellow-600 cursor-pointer">Editar</a>
+                                    @endcan
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 <script>
+    
     document.addEventListener('DOMContentLoaded', function() {
+        
         @if (session('success'))
             Swal.fire({
                 icon: 'success',

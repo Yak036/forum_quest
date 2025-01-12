@@ -8,6 +8,7 @@
         <title>@yield('title', config('app.name'))</title>
 
         <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+
         
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
         <!-- Scripts -->
@@ -40,18 +41,18 @@
             <!-- Page Content -->
             <main class="py-4">
                 <div class="mx-auto sm:px-6 lg:px-8">
-                    <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="overflow-hidden sm:rounded-lg">
                         <div class="p-6">
                             {{ $slot }}
                         </div>
                     </div>
                 </div>
             </main>
-            @if (Route::currentRouteName() != 'register')
-                @include('layouts.footer')
-            @endif
+            
         </div>
-
+        @if (Route::currentRouteName() != 'register')
+            @include('layouts.footer')
+        @endif
         @livewireScripts
     </body>
 </html>
