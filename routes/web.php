@@ -5,6 +5,7 @@ use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\ContactController;
 use App\Http\Livewire\ShowThread;
 use App\Http\Livewire\ShowThreads;
+use App\Http\Livewire\RoutineController;
 use App\Http\Livewire\AdminPanel;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Livewire\Register;
@@ -30,7 +31,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contactSend'
 // * Paginas asyncronas
 Route::get('/', ShowThreads::class)->name('dashboard');
 Route::get('/my_threads', ShowThreads::class)->name('my_threads');
-
+Route::get('/routines', RoutineController::class)->name('routines');
 
 // * Paginas dinamicas que no son asyncronas
 Route::get('/thread/{thread}', ShowThread::class)->middleware(['auth'])->name('thread');

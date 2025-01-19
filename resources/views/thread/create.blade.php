@@ -12,7 +12,7 @@
 
                         @include('thread.form')
 
-                        <input type="submit" value="Hacer una pregunta" id='create-theard' class=" mt-4 cursor-pointer w-full py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:to-yellow-600 text-white/90 font-bold text-xs rounded-md">
+                        <input type="submit" value="Crear tema" id='create-theard' class=" mt-4 cursor-pointer w-full py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:to-yellow-600 text-white/90 font-bold text-xs rounded-md">
                     </form>
                 </div>
             </div>

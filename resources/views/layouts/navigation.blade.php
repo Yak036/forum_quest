@@ -31,6 +31,11 @@
                         {{ __('Panel administrativo') }}
                     </x-nav-link>
                     @endif
+                    @if(Auth::check())
+                    <x-nav-link :href="route('routines')" :active="request()->routeIs('routines')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        {{ __('Rutinas') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 

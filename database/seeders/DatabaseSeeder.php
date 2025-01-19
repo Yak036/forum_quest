@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
 
         // Crear usuarios
         $users = User::factory(10)->create();
+        $trainers = User::factory(3)->create(['role' => 'trainer']);
+
 
         // Crear usuario administrador
         $admin = User::factory()->create([
@@ -33,6 +35,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $users->push($admin);
+        $users->push($trainers);
 
         // Crear rutinas, ejercicios y progresos para cada usuario
         foreach ($users as $user) {
