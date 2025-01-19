@@ -25,15 +25,7 @@
             <!-- Cedula -->
             <div class="input-group">
                 <label for="id_number" class="block text-sm font-medium text-gray-700">Cedula</label>
-                <x-text-input id="id_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="id_number" :value="old('id_number', $user->id_number)" required autocomplete="id-number" />
-                <x-input-error :messages="$errors->get('id_number')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <!-- Nacionalidad -->
-            <div class="input-group">
-                <label for="nationality" class="block text-sm font-medium text-gray-700">Nacionalidad</label>
-                <x-text-input id="nationality" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="nationality" :value="old('nationality', $user->nationality)" required />
-                <x-input-error :messages="$errors->get('nationality')" class="mt-1 text-red-500 text-sm" />
+                <x-text-input id="id_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm bg-gray-100" type="text" name="id_number" :value="$user->id_number" readonly disabled />
             </div>
 
             <!-- Email -->
@@ -50,57 +42,18 @@
                 <x-input-error :messages="$errors->get('date_of_birth')" class="mt-1 text-red-500 text-sm" />
             </div>
 
-            <!-- Facebook -->
+            <!-- Genero -->
             <div class="input-group">
-                <label for="facebook" class="block text-sm font-medium text-gray-700">Facebook</label>
-                <x-text-input id="facebook" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="facebook" :value="old('facebook', $user->facebook)" autocomplete="facebook" />
-                <x-input-error :messages="$errors->get('facebook')" class="mt-1 text-red-500 text-sm" />
+                <label for="genero" class="block text-sm font-medium text-gray-700">Genero</label>
+                <select id="genero" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                    focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" name="genero" required>
+                    <option value="">Selecciona un género</option>
+                    <option value="M" {{ old('genero', $user->genero) == 'M' ? 'selected' : '' }}>Masculino</option>
+                    <option value="F" {{ old('genero', $user->genero) == 'F' ? 'selected' : '' }}>Femenino</option>
+                    <option value="O" {{ old('genero', $user->genero) == 'O' ? 'selected' : '' }}>Otro</option>
+                </select>
+                <x-input-error :messages="$errors->get('genero')" class="mt-1 text-red-500 text-sm" />
             </div>
-
-            <!-- Instagram -->
-            <div class="input-group">
-                <label for="instagram" class="block text-sm font-medium text-gray-700">Instagram</label>
-                <x-text-input id="instagram" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="instagram" :value="old('instagram', $user->instagram)" autocomplete="instagram" />
-                <x-input-error :messages="$errors->get('instagram')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <!-- Twitter -->
-            <div class="input-group">
-                <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter</label>
-                <x-text-input id="twitter" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="twitter" :value="old('twitter', $user->twitter)" autocomplete="twitter" />
-                <x-input-error :messages="$errors->get('twitter')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <!-- Tiktok -->
-            <div class="input-group">
-                <label for="tiktok" class="block text-sm font-medium text-gray-700">Tiktok</label>
-                <x-text-input id="tiktok" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="tiktok" :value="old('tiktok', $user->tiktok)" autocomplete="tiktok" />
-                <x-input-error :messages="$errors->get('tiktok')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <!-- Pagina personal -->
-            <div class="input-group" id='personal_page_container'>
-                <label for="personal_page" class="block text-sm font-medium text-gray-700">Pagina personal</label>
-                <x-text-input id="personal_page" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm" type="text" name="personal_page" :value="old('personal_page', $user->personal_page)" autocomplete="personal_page" />
-                <x-input-error :messages="$errors->get('personal_page')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <!-- Descripción -->
-            <div class="input-group">
-                <label for="description" class="block text-sm font-medium text-gray-700">Breve Descripción</label>
-                <textarea id="description" name="description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">{{ old('description', $user->description) }}</textarea>
-                <x-input-error :messages="$errors->get('description')" class="mt-1 text-red-500 text-sm" />
-            </div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    ClassicEditor
-                        .create(document.querySelector('#description'))
-                        .catch(error => {
-                            console.error(error);
-                        });
-                });
-            </script>
 
         </div>
 

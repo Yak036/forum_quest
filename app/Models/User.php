@@ -21,17 +21,18 @@ class User extends Authenticatable
         'name',
         'last_name',
         'id_number',
-        'nationality',
         'email',
         'date_of_birth',
         'password',
-        'facebook',
-        'instagram',
-        'twitter',
-        'tiktok',
-        'personal_page',
-        'description',
+        'genero',
         'role'
+        // 'nationality',
+        // 'facebook',
+        // 'instagram',
+        // 'twitter',
+        // 'tiktok',
+        // 'personal_page',
+        // 'description',
     ];
 
     /**
