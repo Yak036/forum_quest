@@ -34,7 +34,7 @@
                                                 </button>
                                                 <div x-show="open" @click.away="open = false" class="absolute z-10 mt-1 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                                     <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                        @foreach(['user', 'admin'] as $role)
+                                                        @foreach(['user', 'admin', 'trainer'] as $role)
                                                             <a href="#" wire:click="changeRole({{ $user->id }}, '{{ $role }}')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ ucfirst($role) }}</a>
                                                         @endforeach
                                                     </div>

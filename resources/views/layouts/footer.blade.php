@@ -31,6 +31,11 @@
                               </a>
                           </li>
                           <li>
+                            <a href="{{route('sobrenosotros')}}" class="text-base text-gray-300 hover:text-white">
+                                Sobre nosotros
+                            </a>
+                        </li>
+                          <li>
                               <a href="#" class="text-base text-gray-300 hover:text-white">
                                   FAQ
                               </a>

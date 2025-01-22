@@ -9,7 +9,8 @@ use App\Http\Livewire\RoutineController;
 use App\Http\Livewire\AdminPanel;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Livewire\Register;
-use Illuminate\Routing\RouteUri;
+use App\Http\Livewire\CalendarController;
+use App\Http\Livewire\PracticeController;
 // use App\Models\Thread;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,10 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contactSend'
 // * Paginas asyncronas
 Route::get('/', ShowThreads::class)->name('dashboard');
 Route::get('/my_threads', ShowThreads::class)->name('my_threads');
-Route::get('/routines', RoutineController::class)->name('routines');
+Route::get('/routines', RoutineController::class)->middleware(['auth'])->name('routines');
+Route::get('/calendar', CalendarController::class)->middleware(['auth'])->name('calendar');
+Route::get('/practice', PracticeController::class)->middleware(['auth'])->name('practice');
+
 
 // * Paginas dinamicas que no son asyncronas
 Route::get('/thread/{thread}', ShowThread::class)->middleware(['auth'])->name('thread');

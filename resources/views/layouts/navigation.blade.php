@@ -15,25 +15,42 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                         {{ __('Inicio') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        {{ __('Temas') }}
+                    <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        {{ __('Calendario') }}
                     </x-nav-link>
-                    @if(Auth::check())
-                    <x-nav-link :href="route('my_threads')" :active="request()->routeIs('my_threads')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        {{ __('Mis temas') }}
-                    </x-nav-link>
-                    @endif
-                    <x-nav-link :href="route('sobrenosotros')" :active="request()->routeIs('sobrenosotros')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        {{ __('Sobre nosotros') }}
-                    </x-nav-link>
-                    @if(Auth::check() && Auth::user()->role === 'admin')
-                    <x-nav-link :href="route('adminPanel')" :active="request()->routeIs('admin_panel')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        {{ __('Panel administrativo') }}
-                    </x-nav-link>
-                    @endif
+                    <div class="hidden sm:flex sm:items-center">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center text-gray-200 hover:text-yellow-600 text-sm font-medium transition-colors duration-200">
+                                    <div>{{ __('Temas') }}</div>
+                                    <div class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('dashboard')" class="text-gray-700 hover:bg-yellow-50 hover:text-yellow-600">
+                                    {{ __('Todos los temas') }}
+                                </x-dropdown-link>
+                                @if(Auth::check())
+                                <x-dropdown-link :href="route('my_threads')" class="text-gray-700 hover:bg-yellow-50 hover:text-yellow-600">
+                                    {{ __('Mis temas') }}
+                                </x-dropdown-link>
+                                @endif
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                     @if(Auth::check())
                     <x-nav-link :href="route('routines')" :active="request()->routeIs('routines')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                         {{ __('Rutinas') }}
+                    </x-nav-link>
+                    @endif
+                    @if(Auth::check() && Auth::user()->role === 'admin')
+                    <x-nav-link :href="route('adminPanel')" :active="request()->routeIs('admin_panel')" class="text-gray-900 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        {{ __('Panel administrativo') }}
                     </x-nav-link>
                     @endif
                 </div>
@@ -119,20 +136,24 @@
                 class="text-gray-900 hover:text-yellow-600 hover:bg-yellow-50 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
                 {{ __('Inicio') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" 
-                class="text-gray-900 hover:text-yellow-600 hover:bg-yellow-50 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                {{ __('Temas') }}
-            </x-responsive-nav-link>
-            @if(Auth::check())
-            <x-responsive-nav-link :href="route('my_threads')" :active="request()->routeIs('my_threads')" 
-                class="text-gray-900 hover:text-yellow-600 hover:bg-yellow-50 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                {{ __('Mis temas') }}
-            </x-responsive-nav-link>
-            @endif
-            <x-responsive-nav-link :href="route('sobrenosotros')" :active="request()->routeIs('sobrenosotros')" 
-                class="text-gray-900 hover:text-yellow-600 hover:bg-yellow-50 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">
-                {{ __('Sobre nosotros') }}
-            </x-responsive-nav-link>
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ __('Temas') }}</div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('dashboard')" 
+                        class="text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 block px-4 py-2 text-sm transition-colors duration-200">
+                        {{ __('Todos los temas') }}
+                    </x-responsive-nav-link>
+                    @if(Auth::check())
+                    <x-responsive-nav-link :href="route('my_threads')" 
+                        class="text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 block px-4 py-2 text-sm transition-colors duration-200">
+                        {{ __('Mis temas') }}
+                    </x-responsive-nav-link>
+                    @endif
+                </div>
+            </div>
         </div>
 
         <!-- Responsive Settings Options -->
