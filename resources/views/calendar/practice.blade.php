@@ -15,7 +15,7 @@
 
                     <div class="mb-6">
                         <button wire:click="$toggle('showCreateForm')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                            {{ $showCreateForm ? 'Cerrar formulario' : 'Crear nueva clase' }}
+                            {{ $showCreateForm ? 'Cerrar formulario' : 'Crear nueva practica' }}
                         </button>
                     </div>
 
@@ -24,7 +24,7 @@
                     @endif
 
                     <div class="mt-6">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Clases programadas</h3>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Practicas programadas</h3>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
@@ -72,7 +72,7 @@
         function deletePractice(id) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: '¿Deseas eliminar esta clase?',
+                text: '¿Deseas eliminar esta practica?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

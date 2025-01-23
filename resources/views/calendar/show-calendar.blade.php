@@ -6,11 +6,11 @@
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                     <div class="sm:text-center lg:text-left">
                         <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                            <span class="block">Mis Rutinas</span>
+                            <span class="block">Calendario de practicas</span>
                             <span class="block text-yellow-300">RockstarFitness</span>
                         </h1>
                         <p class="mt-3 text-base text-yellow-100 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            Administra tus rutinas de entrenamiento y mantén un registro de tu progreso.
+                            Visualiza y agenda tus sesiones de entrenamiento de manera eficiente con nuestro calendario interactivo.
                         </p>
                     </div>
                 </main>
@@ -18,7 +18,7 @@
         </div>
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
             <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" 
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" 
+                src="{{ asset('calendar.jpg') }}" 
                 alt="Rutinas de ejercicio">
         </div>
     </div>
@@ -31,7 +31,7 @@
         @if(auth()->user()->role === 'trainer' || auth()->user()->role === 'admin')
             <div class="mb-6 flex justify-start">
                 <a href="{{ route('practice') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                    Mis clases
+                    Mis practicas
                 </a>
             </div>
         @endif
