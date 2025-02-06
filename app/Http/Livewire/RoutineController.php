@@ -32,6 +32,8 @@ class RoutineController extends Component
     public $reps;
     public $notes;
 
+    // Busqueda de usuario 
+    public $search;
     // Reglas de validación para los formularios
     protected $rules = [
         'weight' => 'required|numeric|min:0',
@@ -213,7 +215,7 @@ class RoutineController extends Component
         $this->selectedExerciseId = null;
     }
 
-    // Método para renderizar la vista
+    // * Método para renderizar la vista
     public function render()
     {
         if ($this->selectedRoutineId) {
@@ -233,9 +235,19 @@ class RoutineController extends Component
             ]);
         }
 
+        $allRoutines = Routine::join('users', 'routines.user_id', '=', 'users.id')
+    ->where(function ($query) {
+        $query->where('routines.name', 'like', '%' . $this->search . '%')
+              ->orWhere('routines.description', 'like', '%' . $this->search . '%');
+    })
+    ->orWhere('users.name', 'like', '%' . $this->search . '%') // Buscar por nombre de usuario
+    ->select('routines.*') // Seleccionar solo las columnas de la tabla routines
+    ->paginate(9);
+
         $routines = Auth::user()->routines()->latest()->get();
         return view('training.show-routines', [
-            'routines' => $routines
+            'routines' => $routines,
+            'allRoutines'=> $allRoutines
         ]);
     }
 }

@@ -26,6 +26,9 @@
                     <div class="mt-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Practicas programadas</h3>
                         <div class="overflow-x-auto">
+                            <div>
+                                <input type="text" wire:model="search" placeholder="Buscar" class="border border-gray-300 rounded-md px-4 py-2">
+                            </div>
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>

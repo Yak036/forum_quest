@@ -17,6 +17,7 @@ class PracticeController extends Component
     public $date_time;
     public $duration;
     public $trainer_id;
+    public $search;
     protected $listeners = ['deletePractice'];
 
     protected $rules = [
@@ -31,14 +32,19 @@ class PracticeController extends Component
     public function render()
     {
         $user = auth()->user();
-        $practicesQuery = Practice::with('reservations')->orderBy('date_time', 'asc');
-
+        $practicesQuery = Practice::with('reservations')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy('date_time', 'asc');
+        
         if ($user->role === 'admin') {
-            $practices = $practicesQuery->paginate(10);
+            $practices = $practicesQuery->paginate(9);
         } elseif ($user->role === 'trainer') {
             $practices = $practicesQuery->where('trainer_id', $user->id)->paginate(10);
         } else {
-            $practices = collect(); // Empty collection for other roles
+            $practices = collect();
         }
 
         return view('calendar.practice', [
@@ -89,9 +95,10 @@ class PracticeController extends Component
                 throw new \Exception('No tienes permiso para eliminar esta clase');
             }
 
-            if ($practice->reservations->count() > 0) {
-                throw new \Exception('No puedes eliminar una clase con reservas activas');
-            }
+            //* Codigo para no eliminar practicas con reservas activas
+            // if ($practice->reservations->count() > 0) {
+            //     throw new \Exception('No puedes eliminar una clase con reservas activas');
+            // }
      
             $practice->delete();
             $this->emit('showAlert', [
