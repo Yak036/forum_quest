@@ -19,6 +19,9 @@ class PracticeController extends Component
     public $trainer_id;
     public $search;
     protected $listeners = ['deletePractice'];
+    public $filter = 'date_time';
+    public $asc = true;
+    
 
     protected $rules = [
         'name' => 'required|string|min:3|max:255|regex:/^[^0-9]*$/',
@@ -26,7 +29,7 @@ class PracticeController extends Component
         'capacity' => 'required|integer|min:5|max:20',
         'date_time' => 'required|date|after_or_equal:today|after:now',
         'duration' => 'required|integer|min:15',
-        'trainer_id' => 'required|exists:users,id'
+        'trainer_id' => 'required|exists:users,id',
     ];
 
     public function render()
@@ -36,8 +39,15 @@ class PracticeController extends Component
             ->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy('date_time', 'asc');
+            });
+
+        // Aplicar el ordenamiento según el filtro seleccionado
+        if ($this->filter === 'reservations') {
+            $practicesQuery->withCount('reservations')
+                          ->orderBy('reservations_count', $this->asc ? 'asc' : 'desc');
+        } else {
+            $practicesQuery->orderBy($this->filter, $this->asc ? 'asc' : 'desc');
+        }
         
         if ($user->role === 'admin') {
             $practices = $practicesQuery->paginate(9);
@@ -51,6 +61,13 @@ class PracticeController extends Component
             'trainers' => User::where('role', 'trainer')->get(),
             'practices' => $practices
         ]);
+    }
+
+    // ? funcion para los filtros
+    public function filter($filter)
+    {
+        $this->asc = !$this->asc;
+        $this->filter = $filter;
     }
 
     public function createPractice()

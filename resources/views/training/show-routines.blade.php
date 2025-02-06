@@ -156,7 +156,7 @@
         </div>
     </div>
 
-    @if (Auth::user()->role === 'admin')
+    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'trainer')
         @include('training.show-all-routines')
     @endif
 

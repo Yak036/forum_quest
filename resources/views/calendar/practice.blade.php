@@ -1,4 +1,3 @@
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -13,30 +12,44 @@
                         </div>
                     @endif
 
-                    <div class="mb-6">
-                        <button wire:click="$toggle('showCreateForm')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                            {{ $showCreateForm ? 'Cerrar formulario' : 'Crear nueva practica' }}
-                        </button>
-                    </div>
+                    @if(Auth::user()->role === 'admin')
+                        <div class="mb-6">
+                            <button wire:click="$toggle('showCreateForm')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                {{ $showCreateForm ? 'Cerrar formulario' : 'Crear nueva practica' }}
+                            </button>
+                        </div>
 
-                    @if($showCreateForm)
-                        @include('calendar.form.create-practice')
-                    @endif
+                        @if($showCreateForm)
+                            @include('calendar.form.create-practice')
+                        @endif
+                    @endIf
 
                     <div class="mt-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Practicas programadas</h3>
                         <div class="overflow-x-auto">
                             <div>
-                                <input type="text" wire:model="search" placeholder="Buscar" class="border border-gray-300 rounded-md px-4 py-2">
+                                <input type="text" wire:model="search" placeholder="Buscar entrenador..." id="searchInput" class="border border-gray-300 rounded-md px-4 py-2">
                             </div>
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha y Hora</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duración</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacidad</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reservas</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="filter('date_time')">
+                                            Fecha y Hora
+                                            <i class="fas fa-sort ml-1"></i>
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="filter('duration')">
+                                            Duración
+                                            <i class="fas fa-sort ml-1"></i>
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="filter('capacity')">
+                                            Capacidad
+                                            <i class="fas fa-sort ml-1"></i>
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="filter('reservations')">
+                                            Reservas
+                                            <i class="fas fa-sort ml-1"></i>
+                                        </th>
                                         @if(Auth::user()->role === 'admin')
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                                         @endif                                    </tr>
@@ -72,6 +85,15 @@
 
     @push('scripts')
     <script>
+        let search = document.getElementById('searchInput');
+        search.addEventListener('keyup', function(e) {
+            if (!isNaN(e.target.value.charAt(0))) {
+                search.value = '';
+            } else {
+                search.value = e.target.value.replace(/[0-9]/g, '');
+            }
+        });
+
         function deletePractice(id) {
             Swal.fire({
                 title: '¿Estás seguro?',
@@ -99,6 +121,7 @@
                 });
             });
         });
+
+       
     </script>
     @endpush
-
