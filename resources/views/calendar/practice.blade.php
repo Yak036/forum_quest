@@ -3,7 +3,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Mis Clases</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">Mis Practicas</h2>
                     </div>
 
                     @if($message)
@@ -21,6 +21,65 @@
 
                         @if($showCreateForm)
                             @include('calendar.form.create-practice')
+                        @endif
+
+                        @if($showEditForm)
+                            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">Editar Práctica</h3>
+                                <form wire:submit.prevent="updatePractice">
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label for="edit_name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                                            <input type="text" wire:model="name" id="edit_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                            @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="edit_description" class="block text-sm font-medium text-gray-700">Descripción</label>
+                                            <textarea wire:model="description" id="edit_description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"></textarea>
+                                            @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="edit_capacity" class="block text-sm font-medium text-gray-700">Capacidad</label>
+                                            <input type="number" wire:model="capacity" id="edit_capacity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                            @error('capacity') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="edit_date_time" class="block text-sm font-medium text-gray-700">Fecha y Hora</label>
+                                            <input type="datetime-local" wire:model="date_time" id="edit_date_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                            @error('date_time') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="edit_duration" class="block text-sm font-medium text-gray-700">Duración (minutos)</label>
+                                            <input type="number" wire:model="duration" id="edit_duration" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                            @error('duration') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="edit_trainer_id" class="block text-sm font-medium text-gray-700">Entrenador</label>
+                                            <select wire:model="trainer_id" id="edit_trainer_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500">
+                                                <option value="">Seleccionar entrenador</option>
+                                                @foreach($trainers as $trainer)
+                                                    <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('trainer_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 flex justify-end space-x-3">
+                                        <button type="button" wire:click="cancelEdit" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                            Actualizar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         @endif
                     @endIf
 
@@ -64,8 +123,11 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $practice->reservations->count() }}/{{ $practice->capacity }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 @if(Auth::user()->role === 'admin')
-                                                <button onclick="deletePractice({{ $practice->id }})" class="text-red-600 hover:text-red-900">
-                                                    Eliminar
+                                                <button wire:click="editPractice({{ $practice->id }})" class="text-blue-600 hover:text-blue-900 hover:bg-blue-900 mr-4">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
+                                                <button onclick="deletePractice({{ $practice->id }})" class="text-red-600 hover:text-red-900 ml-4">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                                 @endif
                                             </td>

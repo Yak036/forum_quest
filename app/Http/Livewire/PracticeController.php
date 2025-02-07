@@ -11,6 +11,8 @@ class PracticeController extends Component
     public $message;
     public $messageType;
     public $showCreateForm = false;
+    public $showEditForm = false;
+    public $editingPracticeId;
     public $name;
     public $description;
     public $capacity;
@@ -97,6 +99,58 @@ class PracticeController extends Component
                 'type' => 'error',
                 'title' => 'Error',
                 'message' => 'Error al crear la clase: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function editPractice($practiceId)
+    {
+        $practice = Practice::findOrFail($practiceId);
+        $this->editingPracticeId = $practiceId;
+        $this->name = $practice->name;
+        $this->description = $practice->description;
+        $this->capacity = $practice->capacity;
+        $this->date_time = $practice->date_time->format('Y-m-d\TH:i');
+        $this->duration = $practice->duration;
+        $this->trainer_id = $practice->trainer_id;
+        $this->showEditForm = true;
+        $this->showCreateForm = false;
+    }
+
+    public function cancelEdit()
+    {
+        $this->reset(['editingPracticeId', 'name', 'description', 'capacity', 'date_time', 'duration', 'trainer_id']);
+        $this->showEditForm = false;
+    }
+
+    public function updatePractice()
+    {
+        $this->validate();
+
+        try {
+            $practice = Practice::findOrFail($this->editingPracticeId);
+            $practice->update([
+                'name' => $this->name,
+                'description' => $this->description,
+                'capacity' => $this->capacity,
+                'date_time' => $this->date_time,
+                'duration' => $this->duration,
+                'trainer_id' => $this->trainer_id
+            ]);
+
+            $this->reset(['editingPracticeId', 'name', 'description', 'capacity', 'date_time', 'duration', 'trainer_id']);
+            $this->showEditForm = false;
+            $this->emit('showAlert', [
+                'type' => 'success',
+                'title' => 'Éxito',
+                'message' => 'Práctica actualizada correctamente'
+            ]);
+            $this->emit('practicesUpdated');
+        } catch (\Exception $e) {
+            $this->emit('showAlert', [
+                'type' => 'error',
+                'title' => 'Error',
+                'message' => 'Error al actualizar la práctica: ' . $e->getMessage()
             ]);
         }
     }
