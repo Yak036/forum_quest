@@ -15,7 +15,8 @@ class Progress extends Model
         'reps',
         'notes',
         'date',
-        'exercise_id'
+        'exercise_id',
+        'user_id'
     ];
 
     protected $casts = [

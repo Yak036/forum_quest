@@ -79,16 +79,22 @@ class RoutineController extends Component
     // Método para guardar el progreso
     public function saveProgress()
     {
-        $this->validate();
-
+       
+        // dd($this->selectedExerciseId, $this->weight, $this->reps, $this->notes);
+        $this->validate([
+            'weight' => 'required|numeric|min:0',
+            'reps' => 'required|integer|min:1',
+            'notes' => 'nullable|string|max:255',
+        ]);
         Progress::create([
             'exercise_id' => $this->selectedExerciseId,
             'weight' => $this->weight,
             'reps' => $this->reps,
             'notes' => $this->notes,
-            'date' => now()
+            'date' => now(),
+            'user_id' => Auth::id()
         ]);
-
+        
         $this->resetProgressForm();
         session()->flash('message', 'Progreso guardado exitosamente.');
     }
